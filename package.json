@@ -1,0 +1,47 @@
+{
+  "name": "pixelsteer",
+  "version": "0.1.0",
+  "description": "Point-and-click visual feedback for frontend coding agents",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PixelSteer/pixelsteer-npm.git"
+  },
+  "homepage": "https://pixelsteer.com",
+  "bugs": "https://github.com/PixelSteer/pixelsteer-npm/issues",
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "bin": {
+    "pixelsteer": "bin/pixelsteer.js"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "vendor/",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/install.js"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "frontend",
+    "visual-feedback",
+    "codex",
+    "claude-code",
+    "developer-tools"
+  ]
+}

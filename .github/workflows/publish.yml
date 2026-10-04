@@ -1,0 +1,51 @@
+name: Publish to npm
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'PixelSteer/pixelsteer-npm'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+          package-manager-cache: false
+
+      - name: Verify release version
+        run: >-
+          node -e "const version = require('./package.json').version;
+          if (process.env.GITHUB_REF_NAME !== 'v' + version) {
+            throw new Error('Release tag ' + process.env.GITHUB_REF_NAME +
+            ' does not match package version v' + version);
+          }"
+
+      - name: Check package scripts
+        run: |
+          node --check bin/pixelsteer.js
+          node --check scripts/install.js
+          node --check scripts/platform.js
+
+      - name: Preview package contents
+        run: npm pack --dry-run
+        env:
+          PIXELSTEER_SKIP_DOWNLOAD: "1"
+
+      - name: Publish package
+        run: npm publish
